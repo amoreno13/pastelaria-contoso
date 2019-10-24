@@ -13,8 +13,6 @@ interface RepositoryInterface
     function update($id, array $data = []);       
     
     function delete($id);
-        
-    function pluck($column, $key = null);
 
     function paginate($per_page);
      

@@ -17,7 +17,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
             $className = $this->className($file);
 
-            if($className == 'Repository')
+            if($className == 'RepositoryBase')
                 continue;
                 
             $this->app->bind(
@@ -39,7 +39,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
     private function repositoryPath() {
         
-        $reflector = new \ReflectionClass(\App\Repositories\Repository::class);
+        $reflector = new \ReflectionClass(\App\Repositories\RepositoryBase::class);
         
         return dirname($reflector->getFileName());
     }

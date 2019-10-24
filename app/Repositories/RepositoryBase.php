@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class RepositoryBase
 {
@@ -17,22 +18,32 @@ abstract class RepositoryBase
         return $this->model->create($data);
     }
 
-    public function findByID($id, $fail = true) {
+    public function findByID($id, $relations = null, $fail = true) {
+
+        $query = $this->model;
+
+        if($relations)
+            $query = $query->with($relations);
 
         if ($fail) 
-            return $this->model->findOrFail($id);
+            return $query->findOrFail($id);
         
-        return $this->model->find($id);
+        return $query->find($id);
     }
 
-    public function getAll() {
+    public function getAll($relations = null) {
 
-        return $this->model->get();
+        $query = $this->model;
+
+        if($relations)
+            $query = $query->with($relations);
+
+        return $query->get();
     }
 
     public function update($id, array $data = []) {
 
-        $model = $this->model->where($this->model->getKeyName(), $id)->first();
+        $model = $this->model->findOrFail($id);
         $model->fill($data);
         $model->save();
 
@@ -43,14 +54,14 @@ abstract class RepositoryBase
 
         return $this->model->where($this->model->getKeyName(), $id)->delete();
     }
-    
-    public function pluck($column, $key = null) {
 
-        return $this->model->lists($column, $key);
-    }
-
-    public function paginate($perPage) {
+    public function paginate($perPage, $relations = null) {
         
-        return $this->model->paginate($perPage);
+        $query = $this->model;
+
+        if($relations)
+            $query = $query->with($relations);
+
+        return $query->paginate($perPage);
     }
 }
