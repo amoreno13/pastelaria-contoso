@@ -15,7 +15,7 @@ class StoreOrder extends FormRequest
     {
         return [
             'customer_id'               => 'required|exists:customers,id',                           
-            'pastry_ids.*.pastry_id'    =>  'required|exists:pastels,id',
+            'pastry_ids.*.pastry_id'    => 'required|exists:pastels,id',
             'pastry_ids.*.amount'       => 'required|numeric|min:1'
         ];
     }
