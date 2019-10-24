@@ -6,8 +6,10 @@ use App\Traits\HttpResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreOrder;
 use App\Http\Requests\UpdateOrder;
+use App\Mail\OrderShipped;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -51,7 +53,8 @@ class OrderController extends Controller
     public function update($order, UpdateOrder $request) {
         
         try{
-            $result = $this->orderRepository->update($order, $request->all());
+            $result = $this->orderRepository->update($order, $request->all());            
+            Mail::send(new OrderShipped($result));
 
             return $this->showResponse($result);
 
@@ -64,6 +67,7 @@ class OrderController extends Controller
     public function store(StoreOrder $request) {
         
         $result = $this->orderRepository->create($request->all());
+        Mail::send(new OrderShipped($result));
 
         return $this->showResponse($result);
     }
