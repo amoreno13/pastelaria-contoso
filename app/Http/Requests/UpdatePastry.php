@@ -17,7 +17,7 @@ class UpdatePastry extends FormRequest
             'name'  => 'required',                           
             'price' => 'required|numeric',
             'image' => 'required',
-            'file'  => 'mimetypes:image/jpeg,image/png',
+            'file'  => 'nullable|mimetypes:image/jpeg,image/png',
         ];
     }
 }
