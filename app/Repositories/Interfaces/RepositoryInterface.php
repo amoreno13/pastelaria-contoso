@@ -6,14 +6,14 @@ interface RepositoryInterface
 {
     function create(array $data = []);
 
-    function findByID($id, $fail = true);    
+    function findByID($id, $relations = null, $fail = true);    
     
-    function getAll();    
+    function getAll($relations = null);    
     
     function update($id, array $data = []);       
     
     function delete($id);
 
-    function paginate($per_page);
+    function paginate($perPage, $relations = null);
      
 }
